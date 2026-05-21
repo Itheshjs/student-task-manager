@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Task Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskQuest • Gamified Productivity</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icon Libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Chart.js for analytics visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
     <h1>📚 Study Task Tracker</h1>
-    
-    //Added mutiple themes 
-  <select id="themeSwitcher" class="theme-dropdown">
-  <option value="light">🌞 Light</option>
-  <option value="dark">🌙 Dark</option>
-  <option value="blue">🩵 Blue</option>
-  <option value="pastel">🎀 Pastel</option>
-</select>
-    
+
+    //Added mutiple themes
+    <select id="themeSwitcher" class="theme-dropdown">
+      <option value="light">🌞 Light</option>
+      <option value="dark">🌙 Dark</option>
+      <option value="blue">🩵 Blue</option>
+      <option value="pastel">🎀 Pastel</option>
+    </select>
+
   </header>
 
   <main id="main-content" class="container">
@@ -33,29 +50,111 @@
     <p id="errorMsg" class="error" role="alert"></p>
 
     <ul id="taskList" aria-live="polite" aria-label="Task list"></ul>
-    <p id="emptyState">No tasks added yet. Add one above!</p>
     <p id="taskStats"></p>
 
     <div id="celebration" class="celebration hidden">
-    <img src="task completed image.jpg" alt="Celebration" />
-    <p>All tasks completed! 🎉</p>
-  </div>
+      <img src="task completed image.jpg" alt="Celebration" />
+      <p>All tasks completed! 🎉</p>
+    </div>
 
-  </main>
+    <!-- PROFILE EDIT MODAL -->
+    <div class="popup-overlay" id="profileModalOverlay"></div>
+    <div class="popup-card glass profile-modal" id="profileModal">
+      <button class="close-modal-btn" id="closeProfileModalBtn" aria-label="Close edit profile modal"><i
+          class="ri-close-line"></i></button>
+      <div class="popup-glow"
+        style="background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(0,0,0,0) 70%);"></div>
+      <h2>Edit Profile</h2>
+      <p class="popup-sub">Customize your details</p>
 
-  <footer class="site-footer">
-    <nav aria-label="Footer navigation">
-  <a href="#taskInput">Add task</a>
-  <a href="#taskList">View tasks</a>
-  <a href="#main-content">Back to top</a>
-  <a href="privacy.html">Privacy Policy</a>
-  <a href="terms.html">Terms of Service</a>
-      <a href="#main-content">Back to top</a>
-    </nav>
-    <p>Accessible study tracking with keyboard support and semantic structure.</p>
-    <p>&copy; 2026 Study Task Tracker</p>
-  </footer>
+      <div class="profile-form">
+        <div class="form-group">
+          <label for="profileInputName">Name</label>
+          <input type="text" id="profileInputName" placeholder="Enter your name" />
+        </div>
 
-  <script src="script.js"></script>
+        <div class="form-group">
+          <label>Choose an avatar</label>
+          <div class="avatar-options" id="avatarOptions">
+            <img src="male_avatar.svg" alt="Male avatar" class="avatar-option" data-src="male_avatar.svg" />
+            <img src="female_avatar.svg" alt="Female avatar" class="avatar-option" data-src="female_avatar.svg" />
+            <img src="avatar_blue.svg" alt="Blue avatar" class="avatar-option" data-src="avatar_blue.svg" />
+            <img src="avatar_green.svg" alt="Green avatar" class="avatar-option" data-src="avatar_green.svg" />
+            <img src="avatar_orange.svg" alt="Orange avatar" class="avatar-option" data-src="avatar_orange.svg" />
+            <img src="avatar_purple.svg" alt="Purple avatar" class="avatar-option" data-src="avatar_purple.svg" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="profileInputPhoto">Or upload a photo (Max 1MB)</label>
+          <input type="file" id="profileInputPhoto" accept="image/*" />
+        </div>
+
+        <div class="form-group">
+          <label for="profileInputClass">Class / Grade</label>
+          <input type="text" id="profileInputClass" placeholder="e.g. Class 10" />
+        </div>
+
+        <div class="form-group dropdown-group">
+          <label for="profileInputGender">Gender</label>
+          <select id="profileInputGender">
+            <option value="Male">Male ♂️</option>
+            <option value="Female">Female ♀️</option>
+          </select>
+        </div>
+
+        <div class="form-group dropdown-group">
+          <label for="profileInputTitle">Character Title</label>
+          <select id="profileInputTitle">
+            <option value="Focus Warrior ⚔️">Focus Warrior ⚔️</option>
+            <option value="Study Ninja 🥷">Study Ninja 🥷</option>
+            <option value="Academic Ace 🃏">Academic Ace 🃏</option>
+            <option value="Logic Legend 🧠">Logic Legend 🧠</option>
+            <option value="Quest Master 🏆">Quest Master 🏆</option>
+            <option value="Midnight Scholar 🌙">Midnight Scholar 🌙</option>
+          </select>
+        </div>
+
+        <button class="popup-claim-btn" id="saveProfileBtn">Save Profile ✨</button>
+      </div>
+    </div>
+
+    <!-- ACCESSIBILITY ANNOUNCER -->
+    <div id="srAnnouncement" class="sr-only" aria-live="polite"></div>
+
+    <!-- BREAK REMINDER TOAST POPUP -->
+    <div class="break-toast" id="breakToast" role="alert" aria-live="assertive">
+      <div class="break-toast-inner">
+        <div class="break-toast-emoji" id="breakToastEmoji">☕</div>
+        <div class="break-toast-body">
+          <h4 class="break-toast-title">Time for a Break!</h4>
+          <p class="break-toast-msg" id="breakToastMsg">You've been studying for 25 minutes. Step away, stretch, and
+            hydrate!</p>
+        </div>
+        <button class="break-toast-close" id="breakToastClose" aria-label="Dismiss break reminder">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+      <div class="break-toast-progress" id="breakToastProgress"></div>
+    </div>
+
+    <!-- ASSIGNMENT DEADLINE TOAST -->
+    <div class="asgn-deadline-toast" id="asgnDeadlineToast" role="alert" aria-live="assertive">
+      <div class="asgn-dl-toast-inner">
+        <div class="asgn-dl-icon"><i class="ri-alarm-warning-fill"></i></div>
+        <div class="asgn-dl-body">
+          <h4 class="asgn-dl-title" id="asgnDlToastTitle">Assignment Due Soon!</h4>
+          <p class="asgn-dl-msg" id="asgnDlToastMsg">Math Homework is due in 2 hours.</p>
+        </div>
+        <button class="asgn-dl-close" id="asgnDlToastClose" aria-label="Dismiss deadline reminder"><i
+            class="ri-close-line"></i></button>
+      </div>
+      <div class="asgn-dl-progress" id="asgnDlProgress"></div>
+    </div>
+
+
+    <script src="script.js"></script>
+
 </body>
+
 </html>
